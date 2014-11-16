@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define ENGLISH
+//#define FRENCH
+
+// Creating a struct NODE
+struct NODE {
+	char word[100];
+	struct NODE *next;
+};
+
+void main(){
+
+	struct NODE *head = NULL;
+	struct NODE *temp = NULL;
+	struct NODE *prev;
+	char tempWord[100];
+	char input[100];
+	int i=0;
+	
+	// Using the PRE-PROCESSOR to switch between the languages
+	// Printing the title and asking for the user's first input.
+	#ifdef ENGLISH
+		printf("Welcome to the infinite string storage program.\n");
+		printf("Please input a single word. ");
+	#else
+		printf("Bienvenue dans le programme de stockage de chaîne infinie.\n");
+		printf("Veuillez écrire un seul mot. ");
+	#endif
+	
+	// Obtaining the user's first input
+	fgets(input, 100, stdin);
+	// Obtaining a single word
+	sscanf(input, "%s", tempWord);
+	
+	while(1) {
+		// Allocating memory
+		temp = (struct NODE *) malloc(sizeof(struct NODE));
+		
+		// Add the following words into a linked list
+		for(i=0; i<100; i++){		
+			temp -> word[i] = tempWord[i];
+		}
+
+		if(head == NULL) {
+			head = temp;
+		} 
+		
+		if(prev != NULL) {
+			prev -> next = temp;
+		}
+
+		prev = temp;
+
+		// Using the PRE-PROCESSOR to switch between the languages
+		// Asking the user for their input.		
+		#ifdef ENGLISH
+			printf("Please input a single word. ");
+		#else
+			printf("Veuillez écrire un seul mot. ");
+		#endif			
+
+		// Obtaining the user's input
+		fgets(input, 100, stdin);
+		// Obtaining a single word
+		sscanf(input, "%s", tempWord);		
+
+		// When the user types ***END***, stop asking the user to input words, and print
+		if(strcmp(tempWord,"***END***") == 0){
+			break;
+		}
+		
+	}
+	
+	// Printing the contents of the linked list in the order of the user's input. 
+	printf("Contents of the linked list: \n");
+	for(temp=head; temp !=NULL; temp=temp->next) {
+		printf("%s\n", temp->word);
+	}
+	
+	// Releasing the specified memory.
+	free(temp);
+
+}
